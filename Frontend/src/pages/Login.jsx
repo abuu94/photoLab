@@ -4,157 +4,147 @@ import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("LOGIN BUTTON CLICKED");
+    console.log("Login:", formData);
 
-    if (!email || !password) {
-      alert("Please enter email and password.");
-      return;
-    }
-
-    localStorage.setItem(
-      "shulebora_user",
-      JSON.stringify({
-        email,
-        loggedIn: true,
-      })
-    );
-
-    alert("Login successful!");
-
-    navigate("/");
+    // Temporary demo
+    navigate("/admin");
   };
 
   return (
     <div className="auth-page">
 
-      <div className="auth-card">
+      {/* LEFT: LOGIN FORM */}
+      <section className="auth-form-side">
 
-        <div className="auth-logo">
-          <span>S</span>
-          <strong>
-            Shule<span>Bora</span>
-          </strong>
+        <div className="auth-form-container">
+
+          <div className="auth-top-logo">
+            <img src="/logo.png" alt="ShuleBora Logo" />
+          </div>
+
+          <div className="auth-heading">
+            <span>WELCOME BACK</span>
+            <h1>Login to your account</h1>
+            <p>Enter your credentials to continue.</p>
+          </div>
+
+          <form className="auth-form" onSubmit={handleSubmit}>
+
+            <div className="auth-field">
+              <label htmlFor="email">Email Address</label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="auth-field">
+
+              <div className="auth-label-row">
+                <label htmlFor="password">Password</label>
+
+                <Link to="/forgot-password">
+                  Forgot Password?
+                </Link>
+              </div>
+
+              <div className="auth-password">
+
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+
+              </div>
+            </div>
+
+            <label className="auth-remember">
+              <input type="checkbox" />
+              <span>Remember me</span>
+            </label>
+
+            <button type="submit" className="auth-submit">
+              Login
+            </button>
+
+          </form>
+
+          <div className="auth-switch">
+            <span>Don't have an account?</span>
+            <Link to="/register">Create Account</Link>
+          </div>
+
+          <Link to="/" className="auth-home">
+            ← Back to ShuleBora
+          </Link>
+
         </div>
 
-        <div className="auth-header">
+      </section>
 
-          <span className="auth-badge">
-            Welcome Back
-          </span>
 
-          <h1>Sign in to your account</h1>
+      {/* RIGHT: BRANDING */}
+      <section className="auth-brand-side">
+
+        <div className="auth-brand-background"></div>
+
+        <div className="auth-brand-content">
+
+          <div className="auth-brand-logo">
+            <img src="/logo.png" alt="ShuleBora Logo" />
+          </div>
+
+          <h2>ShuleBora</h2>
+
+          <h3>
+            Empowering the next generation
+            <br />
+            to rise up
+          </h3>
 
           <p>
-            Access your ShuleBora account and continue exploring.
+            A platform for discovering and connecting
+            with schools across Zanzibar.
           </p>
 
         </div>
 
-        <form
-          className="auth-form"
-          onSubmit={handleSubmit}
-        >
-
-          <div className="auth-form-group">
-
-            <label>Email Address</label>
-
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
-
-          </div>
-
-          <div className="auth-form-group">
-
-            <div className="auth-label-row">
-
-              <label>Password</label>
-
-              <button
-                type="button"
-                className="forgot-password-button"
-                onClick={() => {
-                  alert("Forgot Password clicked!");
-                }}
-              >
-                Forgot password?
-              </button>
-
-            </div>
-
-            <div className="password-input">
-
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                required
-              />
-
-              <button
-                type="button"
-                onClick={() =>
-                  setShowPassword((prev) => !prev)
-                }
-              >
-                {showPassword ? "" : ""}
-              </button>
-
-            </div>
-
-          </div>
-
-          <label className="remember-me">
-
-            <input type="checkbox" />
-
-            <span>Remember me</span>
-
-          </label>
-
-          <button
-            type="submit"
-            className="auth-submit-button"
-          >
-            Login
-            <span>→</span>
-          </button>
-
-        </form>
-
-        <div className="auth-divider">
-          <span>or</span>
-        </div>
-
-        <p className="auth-bottom-text">
-          Don't have an account?
-          {" "}
-          <Link to="/get-started">
-            Get Started
-          </Link>
-        </p>
-
-        <Link
-          to="/"
-          className="auth-back-home"
-        >
-          ← Back to Home
-        </Link>
-
-      </div>
+      </section>
 
     </div>
   );

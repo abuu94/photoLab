@@ -13,6 +13,7 @@ const AdminLayout = ({ children }) => {
     ["Activities", "/admin/activities", "◆"],
     ["Features", "/admin/features", "★"],
     ["Facilities", "/admin/facilities", "▦"],
+    ["Images", "/admin/images", "🖼"],
     ["Settings", "/admin/settings", "⚙"],
   ];
 
@@ -51,7 +52,6 @@ const AdminLayout = ({ children }) => {
 
         {/* LOGO */}
         <div className="superadmin-logo">
-
           <div className="superadmin-logo-icon">
             <img
               src="/logo.png"
@@ -63,7 +63,6 @@ const AdminLayout = ({ children }) => {
             <strong>ShuleBora</strong>
             <span>School Admin</span>
           </div>
-
         </div>
 
         {/* NAVIGATION */}
@@ -71,10 +70,13 @@ const AdminLayout = ({ children }) => {
 
           {menu.map(([label, path, icon]) => {
 
-            /* FACILITIES PARENT */
+            {/* FACILITIES */}
             if (label === "Facilities") {
               return (
-                <div key={path} className="sidebar-group">
+                <div
+                  key={path}
+                  className="sidebar-group"
+                >
 
                   <button
                     type="button"
@@ -85,7 +87,6 @@ const AdminLayout = ({ children }) => {
                       setFacilitiesOpen(!facilitiesOpen)
                     }
                   >
-
                     <span className="superadmin-nav-icon">
                       {icon}
                     </span>
@@ -101,10 +102,9 @@ const AdminLayout = ({ children }) => {
                     >
                       ›
                     </span>
-
                   </button>
 
-                  {/* FACILITY SUB MENU */}
+                  {/* SUB MENU */}
                   {facilitiesOpen && (
                     <div className="sidebar-submenu">
 
@@ -125,15 +125,8 @@ const AdminLayout = ({ children }) => {
                                 setSidebarOpen(false)
                               }
                             >
-
-                              <span>
-                                {subIcon}
-                              </span>
-
-                              <span>
-                                {subLabel}
-                              </span>
-
+                              <span>{subIcon}</span>
+                              <span>{subLabel}</span>
                             </Link>
                           );
                         }
@@ -146,7 +139,7 @@ const AdminLayout = ({ children }) => {
               );
             }
 
-            /* NORMAL MENU */
+            {/* NORMAL MENU */}
             return (
               <Link
                 key={path}
@@ -160,13 +153,11 @@ const AdminLayout = ({ children }) => {
                   setSidebarOpen(false)
                 }
               >
-
                 <span className="superadmin-nav-icon">
                   {icon}
                 </span>
 
                 <span>{label}</span>
-
               </Link>
             );
           })}

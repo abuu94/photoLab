@@ -9,16 +9,16 @@ import {
 
 import "./App.css";
 
-/* =========================
+/* =========================================================
    AUTH
-========================= */
+========================================================= */
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
-/* =========================
+/* =========================================================
    ADMIN
-========================= */
+========================================================= */
 
 import AdminLayout from "./admin/AdminLayout";
 import AdminDashboard from "./admin/Dashboard";
@@ -31,9 +31,9 @@ import Contacts from "./admin/Contacts";
 import Qualifications from "./admin/Qualifications";
 import AdminSettings from "./admin/Settings";
 
-/* =========================
+/* =========================================================
    SUPERADMIN
-========================= */
+========================================================= */
 
 import SuperAdminLayout from "./superadmin/SuperAdminLayout";
 import SuperAdminDashboard from "./superadmin/Dashboard";
@@ -44,6 +44,16 @@ import SuperAdminActivities from "./superadmin/Activities";
 import SuperAdminFeatures from "./superadmin/Features";
 import SuperAdminFacilities from "./superadmin/Facilities";
 import SuperAdminSettings from "./superadmin/Settings";
+
+/* =========================================================
+   MEMBER
+========================================================= */
+
+import MemberLayout from "./member/MemberLayout";
+import MemberDashboard from "./member/Dashboard";
+import MemberSchools from "./member/Schools";
+import MemberPhotos from "./member/Photos";
+import MemberLikes from "./member/Likes";
 
 /* =========================================================
    TOP BAR
@@ -512,7 +522,7 @@ function Home() {
 }
 
 /* =========================================================
-   SCHOOLS
+   PUBLIC SCHOOLS
 ========================================================= */
 
 function Schools() {
@@ -606,10 +616,21 @@ function Schools() {
 
             <div className="table-header">
 
-              <span>SCHOOL NAME</span>
-              <span>LOCATION</span>
-              <span>STATUS</span>
-              <span>ACTION</span>
+              <span>
+                SCHOOL NAME
+              </span>
+
+              <span>
+                LOCATION
+              </span>
+
+              <span>
+                STATUS
+              </span>
+
+              <span>
+                ACTION
+              </span>
 
             </div>
 
@@ -650,7 +671,7 @@ function Schools() {
 }
 
 /* =========================================================
-   ACTIVITIES
+   PUBLIC ACTIVITIES
 ========================================================= */
 
 function Activities() {
@@ -684,9 +705,17 @@ function Activities() {
 
             <div className="table-header">
 
-              <span>ACTIVITY</span>
-              <span>CATEGORY</span>
-              <span>DESCRIPTION</span>
+              <span>
+                ACTIVITY
+              </span>
+
+              <span>
+                CATEGORY
+              </span>
+
+              <span>
+                DESCRIPTION
+              </span>
 
             </div>
 
@@ -752,7 +781,6 @@ function Activities() {
 ========================================================= */
 
 function PublicLayout({ children }) {
-
   return (
     <div className="app">
 
@@ -775,7 +803,6 @@ function PublicLayout({ children }) {
 ========================================================= */
 
 function Footer() {
-
   return (
     <footer className="footer">
 
@@ -859,7 +886,6 @@ function Footer() {
 ========================================================= */
 
 function AdminRoutes() {
-
   return (
     <AdminLayout>
 
@@ -921,7 +947,6 @@ function AdminRoutes() {
 ========================================================= */
 
 function SuperAdminRoutes() {
-
   return (
     <SuperAdminLayout>
 
@@ -974,17 +999,54 @@ function SuperAdminRoutes() {
 }
 
 /* =========================================================
+   MEMBER ROUTES
+========================================================= */
+
+function MemberRoutes() {
+  return (
+    <MemberLayout>
+
+      <Routes>
+
+        <Route
+          index
+          element={<MemberDashboard />}
+        />
+
+        <Route
+          path="schools"
+          element={<MemberSchools />}
+        />
+
+        <Route
+          path="photos"
+          element={<MemberPhotos />}
+        />
+
+        <Route
+          path="likes"
+          element={<MemberLikes />}
+        />
+
+      </Routes>
+
+    </MemberLayout>
+  );
+}
+
+/* =========================================================
    APP
 ========================================================= */
 
 function App() {
-
   return (
     <BrowserRouter>
 
       <Routes>
 
-        {/* PUBLIC */}
+        {/* =================================================
+            PUBLIC HOME
+        ================================================= */}
 
         <Route
           path="/"
@@ -995,6 +1057,10 @@ function App() {
           }
         />
 
+        {/* =================================================
+            PUBLIC SCHOOLS
+        ================================================= */}
+
         <Route
           path="/schools"
           element={
@@ -1003,6 +1069,10 @@ function App() {
             </PublicLayout>
           }
         />
+
+        {/* =================================================
+            PUBLIC ACTIVITIES
+        ================================================= */}
 
         <Route
           path="/activities"
@@ -1013,7 +1083,9 @@ function App() {
           }
         />
 
-        {/* AUTH */}
+        {/* =================================================
+            AUTH
+        ================================================= */}
 
         <Route
           path="/login"
@@ -1025,21 +1097,36 @@ function App() {
           element={<Register />}
         />
 
-        {/* ADMIN */}
+        {/* =================================================
+            ADMIN
+        ================================================= */}
 
         <Route
           path="/admin/*"
           element={<AdminRoutes />}
         />
 
-        {/* SUPERADMIN */}
+        {/* =================================================
+            SUPERADMIN
+        ================================================= */}
 
         <Route
           path="/superadmin/*"
           element={<SuperAdminRoutes />}
         />
 
-        {/* UNKNOWN */}
+        {/* =================================================
+            MEMBER
+        ================================================= */}
+
+        <Route
+          path="/member/*"
+          element={<MemberRoutes />}
+        />
+
+        {/* =================================================
+            UNKNOWN ROUTES
+        ================================================= */}
 
         <Route
           path="*"
