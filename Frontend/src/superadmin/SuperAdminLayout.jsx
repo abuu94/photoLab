@@ -6,14 +6,14 @@ const SuperAdminLayout = ({ children }) => {
   const location = useLocation();
 
   const menuItems = [
-    { label: "Dashboard", path: "/superadmin", icon: "" },
-    { label: "Schools", path: "/superadmin/schools", icon: "" },
-    { label: "Admins", path: "/superadmin/admins", icon: "" },
-    { label: "Users", path: "/superadmin/users", icon: "" },
-    { label: "Activities", path: "/superadmin/activities", icon: "" },
-    { label: "Features", path: "/superadmin/features", icon: "" },
-    { label: "Facilities", path: "/superadmin/facilities", icon: "" },
-    { label: "Settings", path: "/superadmin/settings", icon: "" },
+    { label: "Dashboard", path: "/superadmin", icon: "▣" },
+    { label: "Schools", path: "/superadmin/schools", icon: "▤" },
+    { label: "Admins", path: "/superadmin/admins", icon: "♙" },
+    { label: "Users", path: "/superadmin/users", icon: "♟" },
+    { label: "Activities", path: "/superadmin/activities", icon: "◆" },
+    { label: "Features", path: "/superadmin/features", icon: "★" },
+    { label: "Facilities", path: "/superadmin/facilities", icon: "▦" },
+    { label: "Settings", path: "/superadmin/settings", icon: "⚙" },
   ];
 
   const handleLogout = () => {
@@ -38,19 +38,27 @@ const SuperAdminLayout = ({ children }) => {
           sidebarOpen ? "sidebar-open" : ""
         }`}
       >
-        <div className="superadmin-logo">
-          <div className="superadmin-logo-icon">S</div>
 
-          <div>
+        {/* LOGO */}
+        <div className="superadmin-logo">
+          <div className="superadmin-logo-icon">
+            <img
+              src="/logo.png"
+              alt="ShuleBora Logo"
+            />
+          </div>
+
+          <div className="superadmin-logo-text">
             <strong>ShuleBora</strong>
             <span>SuperAdmin</span>
           </div>
         </div>
 
+        {/* NAVIGATION */}
         <nav className="superadmin-nav">
+
           {menuItems.map((item) => {
-            const active =
-              location.pathname === item.path;
+            const active = location.pathname === item.path;
 
             return (
               <Link
@@ -69,15 +77,18 @@ const SuperAdminLayout = ({ children }) => {
               </Link>
             );
           })}
+
         </nav>
 
+        {/* LOGOUT */}
         <button
           className="superadmin-logout"
           onClick={handleLogout}
         >
-          <span></span>
-          Logout
+          <span className="superadmin-nav-icon">↪</span>
+          <span>Logout</span>
         </button>
+
       </aside>
 
       {/* MAIN AREA */}
@@ -86,11 +97,10 @@ const SuperAdminLayout = ({ children }) => {
         {/* TOPBAR */}
         <header className="superadmin-topbar">
 
+          {/* MOBILE MENU */}
           <button
             className="superadmin-hamburger"
-            onClick={() =>
-              setSidebarOpen(!sidebarOpen)
-            }
+            onClick={() => setSidebarOpen(!sidebarOpen)}
             aria-label="Toggle menu"
           >
             <span></span>
@@ -98,14 +108,20 @@ const SuperAdminLayout = ({ children }) => {
             <span></span>
           </button>
 
+          {/* TITLE */}
           <div className="superadmin-topbar-title">
             <strong>ShuleBora</strong>
             <span>SuperAdmin Panel</span>
           </div>
 
+          {/* PROFILE */}
           <div className="superadmin-profile">
-            <button className="superadmin-notification">
-              
+
+            <button
+              className="superadmin-notification"
+              aria-label="Notifications"
+            >
+              ●
             </button>
 
             <div className="superadmin-avatar">
@@ -116,6 +132,7 @@ const SuperAdminLayout = ({ children }) => {
               <strong>SuperAdmin</strong>
               <span>Administrator</span>
             </div>
+
           </div>
 
         </header>
