@@ -1,122 +1,238 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
+import Navbar from "./guest/components/Navbar";
+import Hero from "./guest/components/Hero";
+import SearchBar from "./guest/components/SearchBar";
 
+import PublicLayout from "./guest/PublicLayout";
+import Footer from "./guest/components/Footer";
+
+import Schools from "./pages/Schools";
+import Activities from "./pages/Activities";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Login from "./pages/Login";
+import GetStarted from "./pages/GetStarted";
+
+/* SUPERADMIN */
+import SuperAdminLayout from "./superadmin/SuperAdminLayout";
+import SuperAdminDashboard from "./superadmin/Dashboard";
+import SuperAdminSchools from "./superadmin/Schools";
+import SuperAdminAdmins from "./superadmin/Admins";
+import SuperAdminUsers from "./superadmin/Users";
+import SuperAdminActivities from "./superadmin/Activities";
+import SuperAdminFeatures from "./superadmin/Features";
+import SuperAdminFacilities from "./superadmin/Facilities";
+import SuperAdminSettings from "./superadmin/Settings";
+
+/* ADMIN */
+import AdminLayout from "./admin/AdminLayout";
+import AdminDashboard from "./admin/Dashboard";
+import AdminSchoolInfo from "./admin/SchoolInfo";
+import AdminActivities from "./admin/Activities";
+import AdminFeatures from "./admin/Features";
+import AdminFacilities from "./admin/Facilities";
+import AdminImages from "./admin/Images";
+import AdminContacts from "./admin/Contacts";
+import AdminQualifications from "./admin/Qualifications";
+import AdminSettings from "./admin/Settings";
+
+const Home = () => {
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <Hero />
+      <SearchBar />
     </>
-  )
-}
+  );
+};
 
-export default App
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+
+        {/* ================= PUBLIC ================= */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/schools" element={<Schools />} />
+          <Route path="/activities" element={<Activities />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/get-started" element={<GetStarted />} />
+        </Route>
+
+
+        {/* ================= SUPERADMIN ================= */}
+
+        <Route
+          path="/superadmin"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminDashboard />
+            </SuperAdminLayout>
+          }
+        />
+
+        <Route
+          path="/superadmin/schools"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminSchools />
+            </SuperAdminLayout>
+          }
+        />
+
+        <Route
+          path="/superadmin/admins"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminAdmins />
+            </SuperAdminLayout>
+          }
+        />
+
+        <Route
+          path="/superadmin/users"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminUsers />
+            </SuperAdminLayout>
+          }
+        />
+
+        <Route
+          path="/superadmin/activities"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminActivities />
+            </SuperAdminLayout>
+          }
+        />
+
+        <Route
+          path="/superadmin/features"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminFeatures />
+            </SuperAdminLayout>
+          }
+        />
+
+        <Route
+          path="/superadmin/facilities"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminFacilities />
+            </SuperAdminLayout>
+          }
+        />
+
+        <Route
+          path="/superadmin/settings"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminSettings />
+            </SuperAdminLayout>
+          }
+        />
+
+
+        {/* ================= ADMIN ================= */}
+
+        <Route
+          path="/admin"
+          element={
+            <AdminLayout>
+              <AdminDashboard />
+            </AdminLayout>
+          }
+        />
+
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminLayout>
+              <AdminDashboard />
+            </AdminLayout>
+          }
+        />
+
+        <Route
+          path="/admin/school-info"
+          element={
+            <AdminLayout>
+              <AdminSchoolInfo />
+            </AdminLayout>
+          }
+        />
+
+        <Route
+          path="/admin/activities"
+          element={
+            <AdminLayout>
+              <AdminActivities />
+            </AdminLayout>
+          }
+        />
+
+        <Route
+          path="/admin/features"
+          element={
+            <AdminLayout>
+              <AdminFeatures />
+            </AdminLayout>
+          }
+        />
+
+        <Route
+          path="/admin/facilities"
+          element={
+            <AdminLayout>
+              <AdminFacilities />
+            </AdminLayout>
+          }
+        />
+
+        <Route
+          path="/admin/images"
+          element={
+            <AdminLayout>
+              <AdminImages />
+            </AdminLayout>
+          }
+        />
+
+        <Route
+          path="/admin/contacts"
+          element={
+            <AdminLayout>
+              <AdminContacts />
+            </AdminLayout>
+          }
+        />
+
+        <Route
+          path="/admin/qualifications"
+          element={
+            <AdminLayout>
+              <AdminQualifications />
+            </AdminLayout>
+          }
+        />
+
+        <Route
+          path="/admin/settings"
+          element={
+            <AdminLayout>
+              <AdminSettings />
+            </AdminLayout>
+          }
+        />
+
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default App;
