@@ -1,238 +1,438 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import "./App.css";
 
-import Navbar from "./guest/components/Navbar";
-import Hero from "./guest/components/Hero";
-import SearchBar from "./guest/components/SearchBar";
+function TopBar() {
+  return (
+    <div className="top-bar">
+      <div className="site-width top-bar-inner">
+        <div className="top-left">
+          SHULEBORA
+        </div>
 
-import PublicLayout from "./guest/PublicLayout";
-import Footer from "./guest/components/Footer";
+        <div className="top-right">
+          <a href="#about">About Us</a>
+          <a href="#contact">Contact</a>
+          <a href="/login">Login</a>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-import Schools from "./pages/Schools";
-import Activities from "./pages/Activities";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Login from "./pages/Login";
-import GetStarted from "./pages/GetStarted";
+function Header() {
+  return (
+    <header className="main-header">
+      <div className="site-width header-inner">
 
-/* SUPERADMIN */
-import SuperAdminLayout from "./superadmin/SuperAdminLayout";
-import SuperAdminDashboard from "./superadmin/Dashboard";
-import SuperAdminSchools from "./superadmin/Schools";
-import SuperAdminAdmins from "./superadmin/Admins";
-import SuperAdminUsers from "./superadmin/Users";
-import SuperAdminActivities from "./superadmin/Activities";
-import SuperAdminFeatures from "./superadmin/Features";
-import SuperAdminFacilities from "./superadmin/Facilities";
-import SuperAdminSettings from "./superadmin/Settings";
+        <div className="header-logo">
+          <img src="/logo.png" alt="ShuleBora Logo" />
+        </div>
 
-/* ADMIN */
-import AdminLayout from "./admin/AdminLayout";
-import AdminDashboard from "./admin/Dashboard";
-import AdminSchoolInfo from "./admin/SchoolInfo";
-import AdminActivities from "./admin/Activities";
-import AdminFeatures from "./admin/Features";
-import AdminFacilities from "./admin/Facilities";
-import AdminImages from "./admin/Images";
-import AdminContacts from "./admin/Contacts";
-import AdminQualifications from "./admin/Qualifications";
-import AdminSettings from "./admin/Settings";
+        <div className="header-title">
+          <h1>SHULEBORA</h1>
+          <p>Empowering the next generation to rise up</p>
+        </div>
 
-const Home = () => {
+        <div className="header-right">
+          <img src="/logo.png" alt="ShuleBora Logo" />
+
+          <div className="auth-buttons">
+            <a href="/login">LOGIN</a>
+            <a href="/register">REGISTER</a>
+          </div>
+        </div>
+
+      </div>
+    </header>
+  );
+}
+
+function Navbar() {
+  return (
+    <nav className="main-nav">
+      <div className="site-width nav-inner">
+        <a href="/">HOME</a>
+        <a href="/schools">SCHOOLS</a>
+        <a href="/activities">ACTIVITIES</a>
+        <a href="#about">ABOUT US</a>
+        <a href="#contact">CONTACT</a>
+      </div>
+    </nav>
+  );
+}
+
+function Hero() {
+  const [search, setSearch] = useState("");
+
+  return (
+    <section className="hero-section">
+      <div className="site-width hero-content">
+        <div className="hero-text">
+          <span>SHULEBORA SCHOOL DIRECTORY</span>
+
+          <h2>
+            Find the Right School
+            <br />
+            for the Next Generation
+          </h2>
+
+          <p>
+            Explore schools, educational activities, facilities,
+            qualifications and important information in one place.
+          </p>
+        </div>
+
+        <div className="hero-search">
+          <input
+            type="text"
+            placeholder="Search school name, location or programme..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <button type="button">SEARCH</button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Home() {
   return (
     <>
       <Hero />
-      <SearchBar />
+
+      <main className="site-width main-content">
+        <section className="section-block">
+          <div className="section-heading">
+            <div>
+              <span className="section-label">SHULEBORA PORTAL</span>
+              <h2>Explore Schools</h2>
+            </div>
+
+            <a href="/schools" className="outline-button">
+              VIEW ALL SCHOOLS
+            </a>
+          </div>
+
+          <div className="school-list">
+            <div className="school-row">
+              <div>
+                <h3>School Name</h3>
+                <p>Location information</p>
+              </div>
+
+              <div className="school-meta">
+                <span>REGISTERED</span>
+                <a href="/schools">VIEW DETAILS</a>
+              </div>
+            </div>
+
+            <div className="school-row">
+              <div>
+                <h3>School Name</h3>
+                <p>Location information</p>
+              </div>
+
+              <div className="school-meta">
+                <span>REGISTERED</span>
+                <a href="/schools">VIEW DETAILS</a>
+              </div>
+            </div>
+
+            <div className="school-row">
+              <div>
+                <h3>School Name</h3>
+                <p>Location information</p>
+              </div>
+
+              <div className="school-meta">
+                <span>REGISTERED</span>
+                <a href="/schools">VIEW DETAILS</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section-block" id="activities">
+          <div className="section-heading">
+            <div>
+              <span className="section-label">EDUCATION</span>
+              <h2>School Activities</h2>
+            </div>
+
+            <a href="/activities" className="outline-button">
+              VIEW ACTIVITIES
+            </a>
+          </div>
+
+          <div className="information-list">
+            <div className="information-row">
+              <strong>Academic Activities</strong>
+              <span>Academic programmes and learning activities</span>
+            </div>
+
+            <div className="information-row">
+              <strong>Sports Activities</strong>
+              <span>Sports and physical education activities</span>
+            </div>
+
+            <div className="information-row">
+              <strong>Social Activities</strong>
+              <span>Social and community activities</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="section-block" id="about">
+          <div className="section-heading">
+            <div>
+              <span className="section-label">ABOUT SHULEBORA</span>
+              <h2>About Us</h2>
+            </div>
+          </div>
+
+          <div className="text-section">
+            <p>
+              ShuleBora is a school information platform designed to help
+              communities discover and understand schools through reliable
+              information.
+            </p>
+
+            <p>
+              The platform provides information about schools, activities,
+              facilities, qualifications, contacts and other important
+              educational information.
+            </p>
+          </div>
+        </section>
+
+        <section className="section-block" id="contact">
+          <div className="section-heading">
+            <div>
+              <span className="section-label">GET IN TOUCH</span>
+              <h2>Contact Us</h2>
+            </div>
+          </div>
+
+          <form className="contact-form">
+            <div className="form-row">
+              <div className="form-group">
+                <label>FULL NAME</label>
+                <input type="text" placeholder="Enter your full name" />
+              </div>
+
+              <div className="form-group">
+                <label>EMAIL ADDRESS</label>
+                <input type="email" placeholder="Enter your email" />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>SUBJECT</label>
+              <input type="text" placeholder="Enter subject" />
+            </div>
+
+            <div className="form-group">
+              <label>MESSAGE</label>
+              <textarea
+                rows="6"
+                placeholder="Write your message"
+              ></textarea>
+            </div>
+
+            <button type="button" className="primary-button">
+              SEND MESSAGE
+            </button>
+          </form>
+        </section>
+      </main>
     </>
   );
-};
+}
 
-const App = () => {
+function Schools() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <>
+      <section className="page-banner">
+        <div className="site-width">
+          <span>SCHOOL DIRECTORY</span>
+          <h2>Registered Schools</h2>
+          <p>
+            Browse schools and access their educational information.
+          </p>
+        </div>
+      </section>
 
-        {/* ================= PUBLIC ================= */}
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/schools" element={<Schools />} />
-          <Route path="/activities" element={<Activities />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/get-started" element={<GetStarted />} />
-        </Route>
+      <main className="site-width main-content">
+        <section className="directory-section">
+          <div className="directory-header">
+            <div>
+              <span className="section-label">DIRECTORY</span>
+              <h2>Schools</h2>
+            </div>
 
+            <div className="results-count">
+              Registered Schools
+            </div>
+          </div>
 
-        {/* ================= SUPERADMIN ================= */}
+          <div className="filter-area">
+            <input
+              type="text"
+              placeholder="Search by school name..."
+            />
 
-        <Route
-          path="/superadmin"
-          element={
-            <SuperAdminLayout>
-              <SuperAdminDashboard />
-            </SuperAdminLayout>
-          }
-        />
+            <select defaultValue="">
+              <option value="">All Locations</option>
+              <option value="zanzibar">Zanzibar</option>
+              <option value="unguja">Unguja</option>
+              <option value="pemba">Pemba</option>
+            </select>
 
-        <Route
-          path="/superadmin/schools"
-          element={
-            <SuperAdminLayout>
-              <SuperAdminSchools />
-            </SuperAdminLayout>
-          }
-        />
+            <button type="button">SEARCH</button>
+          </div>
 
-        <Route
-          path="/superadmin/admins"
-          element={
-            <SuperAdminLayout>
-              <SuperAdminAdmins />
-            </SuperAdminLayout>
-          }
-        />
+          <div className="school-table">
+            <div className="table-header">
+              <span>SCHOOL NAME</span>
+              <span>LOCATION</span>
+              <span>STATUS</span>
+              <span>ACTION</span>
+            </div>
 
-        <Route
-          path="/superadmin/users"
-          element={
-            <SuperAdminLayout>
-              <SuperAdminUsers />
-            </SuperAdminLayout>
-          }
-        />
+            <div className="table-row">
+              <strong>School Name</strong>
+              <span>Location</span>
+              <span className="status">REGISTERED</span>
+              <a href="/schools">VIEW</a>
+            </div>
 
-        <Route
-          path="/superadmin/activities"
-          element={
-            <SuperAdminLayout>
-              <SuperAdminActivities />
-            </SuperAdminLayout>
-          }
-        />
+            <div className="table-row">
+              <strong>School Name</strong>
+              <span>Location</span>
+              <span className="status">REGISTERED</span>
+              <a href="/schools">VIEW</a>
+            </div>
 
-        <Route
-          path="/superadmin/features"
-          element={
-            <SuperAdminLayout>
-              <SuperAdminFeatures />
-            </SuperAdminLayout>
-          }
-        />
-
-        <Route
-          path="/superadmin/facilities"
-          element={
-            <SuperAdminLayout>
-              <SuperAdminFacilities />
-            </SuperAdminLayout>
-          }
-        />
-
-        <Route
-          path="/superadmin/settings"
-          element={
-            <SuperAdminLayout>
-              <SuperAdminSettings />
-            </SuperAdminLayout>
-          }
-        />
-
-
-        {/* ================= ADMIN ================= */}
-
-        <Route
-          path="/admin"
-          element={
-            <AdminLayout>
-              <AdminDashboard />
-            </AdminLayout>
-          }
-        />
-
-        <Route
-          path="/admin/dashboard"
-          element={
-            <AdminLayout>
-              <AdminDashboard />
-            </AdminLayout>
-          }
-        />
-
-        <Route
-          path="/admin/school-info"
-          element={
-            <AdminLayout>
-              <AdminSchoolInfo />
-            </AdminLayout>
-          }
-        />
-
-        <Route
-          path="/admin/activities"
-          element={
-            <AdminLayout>
-              <AdminActivities />
-            </AdminLayout>
-          }
-        />
-
-        <Route
-          path="/admin/features"
-          element={
-            <AdminLayout>
-              <AdminFeatures />
-            </AdminLayout>
-          }
-        />
-
-        <Route
-          path="/admin/facilities"
-          element={
-            <AdminLayout>
-              <AdminFacilities />
-            </AdminLayout>
-          }
-        />
-
-        <Route
-          path="/admin/images"
-          element={
-            <AdminLayout>
-              <AdminImages />
-            </AdminLayout>
-          }
-        />
-
-        <Route
-          path="/admin/contacts"
-          element={
-            <AdminLayout>
-              <AdminContacts />
-            </AdminLayout>
-          }
-        />
-
-        <Route
-          path="/admin/qualifications"
-          element={
-            <AdminLayout>
-              <AdminQualifications />
-            </AdminLayout>
-          }
-        />
-
-        <Route
-          path="/admin/settings"
-          element={
-            <AdminLayout>
-              <AdminSettings />
-            </AdminLayout>
-          }
-        />
-
-      </Routes>
-    </BrowserRouter>
+            <div className="table-row">
+              <strong>School Name</strong>
+              <span>Location</span>
+              <span className="status">REGISTERED</span>
+              <a href="/schools">VIEW</a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
   );
-};
+}
+
+function Activities() {
+  return (
+    <>
+      <section className="page-banner">
+        <div className="site-width">
+          <span>SCHOOL ACTIVITIES</span>
+          <h2>Activities</h2>
+          <p>
+            Discover educational, sports and community activities.
+          </p>
+        </div>
+      </section>
+
+      <main className="site-width main-content">
+        <section className="section-block">
+          <div className="activity-table">
+            <div className="table-header">
+              <span>ACTIVITY</span>
+              <span>CATEGORY</span>
+              <span>DESCRIPTION</span>
+            </div>
+
+            <div className="table-row">
+              <strong>Academic Programme</strong>
+              <span>ACADEMIC</span>
+              <span>Learning and academic development</span>
+            </div>
+
+            <div className="table-row">
+              <strong>Football</strong>
+              <span>SPORTS</span>
+              <span>Sports and physical development</span>
+            </div>
+
+            <div className="table-row">
+              <strong>Community Service</strong>
+              <span>SOCIAL</span>
+              <span>Community development activities</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="site-width footer-grid">
+        <div>
+          <h3>SHULEBORA</h3>
+          <p>
+            School Information Portal for discovering better
+            educational opportunities.
+          </p>
+        </div>
+
+        <div>
+          <h4>QUICK LINKS</h4>
+          <a href="/">Home</a>
+          <a href="/schools">Schools</a>
+          <a href="/activities">Activities</a>
+        </div>
+
+        <div>
+          <h4>CONTACT</h4>
+          <p>Email: info@shulebora.com</p>
+          <p>Location: Zanzibar, Tanzania</p>
+        </div>
+      </div>
+
+      <div className="footer-bottom">
+        <div className="site-width">
+          © 2026 SHULEBORA. All Rights Reserved.
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function App() {
+  const path = window.location.pathname;
+
+  let page;
+
+  if (path === "/schools") {
+    page = <Schools />;
+  } else if (path === "/activities") {
+    page = <Activities />;
+  } else {
+    page = <Home />;
+  }
+
+  return (
+    <div className="app">
+      <TopBar />
+      <Header />
+      <Navbar />
+
+      {page}
+
+      <Footer />
+    </div>
+  );
+}
 
 export default App;
