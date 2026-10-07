@@ -1,79 +1,125 @@
-const Schools = () => {
-  const schools = [
-    {
-      name: "NIA Academy",
-      location: "Kisauni, Zanzibar",
-      students: "450 Students",
-    },
-    {
-      name: "Zanzibar Modern School",
-      location: "Urban West, Zanzibar",
-      students: "620 Students",
-    },
-    {
-      name: "Al-Noor Islamic School",
-      location: "Mkunazini, Zanzibar",
-      students: "380 Students",
-    },
-  ];
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import API_URL from "../services/api";
+
+export default function Schools() {
+  const [schools, setSchools] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch(`${API_URL}/schools`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to load schools");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setSchools(data.schools || data.data || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Unable to load schools.");
+        setLoading(false);
+      });
+  }, []);
 
   return (
-    <div className="member-page">
+    <div className="member-dashboard">
 
-      <div className="member-page-header">
+      <div className="member-page-heading">
         <div>
-          <p className="superadmin-eyebrow">
-            DISCOVER
-          </p>
+          <h2>Schools</h2>
+          <p>Discover schools available on ShuleBora.</p>
+        </div>
 
-          <h1>Schools</h1>
-
-          <p>
-            Explore registered schools across Zanzibar.
-          </p>
+        <div className="member-school-count">
+          {loading ? "..." : schools.length} Schools
         </div>
       </div>
 
-      <div className="member-search">
-        <input
-          type="text"
-          placeholder="Search schools..."
-        />
-      </div>
+      {loading && (
+        <div className="member-empty">
+          Loading schools from database...
+        </div>
+      )}
 
-      <div className="member-school-grid">
+      {!loading && error && (
+        <div className="member-empty">
+          {error}
+        </div>
+      )}
 
-        {schools.map((school) => (
-          <div
-            className="member-school-card"
-            key={school.name}
-          >
-            <div className="member-school-icon">
-              🏫
-            </div>
+      {!loading && !error && schools.length === 0 && (
+        <div className="member-empty">
+          No schools have been added yet.
+        </div>
+      )}
 
-            <div>
-              <h3>{school.name}</h3>
+      {!loading && !error && schools.length > 0 && (
+        <div className="member-schools-table">
 
-              <p>
-                📍 {school.location}
-              </p>
-
-              <span>
-                {school.students}
-              </span>
-            </div>
-
-            <button>
-              View School
-            </button>
+          <div className="member-schools-table-head">
+            <span>School</span>
+            <span>Location</span>
+            <span>Status</span>
+            <span>Action</span>
           </div>
-        ))}
 
-      </div>
+          {schools.map((school) => (
+            <div
+              className="member-school-item"
+              key={school.id}
+            >
+
+              <div className="member-school-name">
+                <div className="member-school-avatar">
+                  {(school.name || "S")
+                    .charAt(0)
+                    .toUpperCase()}
+                </div>
+
+                <div>
+                  <strong>
+                    {school.name || "Unnamed School"}
+                  </strong>
+
+                  <small>
+                    School ID: {school.id}
+                  </small>
+                </div>
+              </div>
+
+              <div className="member-school-location">
+                {school.location ||
+                  school.address ||
+                  school.city ||
+                  "Zanzibar"}
+              </div>
+
+              <div>
+                <span className="member-school-status">
+                  {school.status || "ACTIVE"}
+                </span>
+              </div>
+
+              <div>
+                <Link
+                  to={`/schools/${school.id}`}
+                  className="member-view-button"
+                >
+                  View
+                </Link>
+              </div>
+
+            </div>
+          ))}
+
+        </div>
+      )}
 
     </div>
   );
-};
-
-export default Schools;
+}

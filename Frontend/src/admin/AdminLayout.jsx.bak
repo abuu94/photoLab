@@ -3,17 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const user = JSON.parse(
-    localStorage.getItem("shulebora_user") || "{}"
-  );
-
-  const token = localStorage.getItem("shulebora_token");
-
-  if (!token || user.role !== "ADMIN") {
-    window.location.href = "/login";
-    return null;
-  }
   const [facilitiesOpen, setFacilitiesOpen] = useState(false);
 
   const location = useLocation();
@@ -36,7 +25,6 @@ const AdminLayout = ({ children }) => {
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem("shulebora_token");
     localStorage.removeItem("shulebora_user");
     window.location.href = "/login";
   };

@@ -50,19 +50,6 @@ const Login = () => {
         throw new Error(data.message || "Invalid email or password");
       }
 
-      // Validate user role
-      const allowedRoles = ["SUPERADMIN", "ADMIN", "MEMBER"];
-
-      if (!data.user || !allowedRoles.includes(data.user.role)) {
-        localStorage.removeItem("shulebora_token");
-        localStorage.removeItem("shulebora_user");
-        throw new Error("Invalid user role.");
-      }
-
-      // Always replace any previous session
-      localStorage.removeItem("shulebora_token");
-      localStorage.removeItem("shulebora_user");
-
       // Save authentication data
       localStorage.setItem("shulebora_token", data.token);
       localStorage.setItem(

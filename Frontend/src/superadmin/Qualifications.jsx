@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import API_URL from "../services/api";
 
-const Features = () => {
-  const [features, setFeatures] = useState([]);
+const Qualifications = () => {
+  const [qualifications, setQualifications] = useState([]);
   const [schools, setSchools] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -34,37 +34,37 @@ const Features = () => {
 
       setSchools(data.schools || []);
     } catch (err) {
-      console.error(err);
+      console.error("Schools error:", err);
     }
   };
 
-  const loadFeatures = async () => {
+  const loadQualifications = async () => {
+    if (!form.school_id) {
+      setQualifications([]);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError("");
 
-      if (!form.school_id) {
-        setFeatures([]);
-        setLoading(false);
-        return;
-      }
-
       const response = await fetch(
-        `${API_URL}/content/features/${form.school_id}`
+        `${API_URL}/content/qualifications/${form.school_id}`
       );
 
       const data = await response.json();
 
       if (!response.ok || !data.success) {
         throw new Error(
-          data.message || "Failed to load features"
+          data.message || "Failed to load qualifications"
         );
       }
 
-      setFeatures(data.items || []);
+      setQualifications(data.items || []);
     } catch (err) {
       setError(
-        err.message || "Failed to load features"
+        err.message || "Failed to load qualifications"
       );
     } finally {
       setLoading(false);
@@ -76,12 +76,7 @@ const Features = () => {
   }, []);
 
   useEffect(() => {
-    if (form.school_id) {
-      loadFeatures();
-    } else {
-      setFeatures([]);
-      setLoading(false);
-    }
+    loadQualifications();
   }, [form.school_id]);
 
   const handleChange = (e) => {
@@ -98,7 +93,7 @@ const Features = () => {
 
     if (!form.school_id || !form.name) {
       setError(
-        "School and feature name are required."
+        "School and qualification name are required."
       );
       return;
     }
@@ -111,7 +106,7 @@ const Features = () => {
       );
 
       const response = await fetch(
-        `${API_URL}/content/features`,
+        `${API_URL}/content/qualifications`,
         {
           method: "POST",
           headers: {
@@ -130,7 +125,8 @@ const Features = () => {
 
       if (!response.ok || !data.success) {
         throw new Error(
-          data.message || "Failed to create feature"
+          data.message ||
+            "Failed to create qualification"
         );
       }
 
@@ -142,12 +138,15 @@ const Features = () => {
 
       setShowForm(false);
 
-      await loadFeatures();
+      await loadQualifications();
 
-      alert("Feature created successfully.");
+      alert(
+        "Qualification created successfully."
+      );
     } catch (err) {
       setError(
-        err.message || "Failed to create feature"
+        err.message ||
+          "Failed to create qualification"
       );
     } finally {
       setSaving(false);
@@ -155,13 +154,11 @@ const Features = () => {
   };
 
   const handleDelete = async (id) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this feature?"
-      )
-    ) {
-      return;
-    }
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this qualification?"
+    );
+
+    if (!confirmed) return;
 
     try {
       const token = localStorage.getItem(
@@ -169,7 +166,7 @@ const Features = () => {
       );
 
       const response = await fetch(
-        `${API_URL}/content/features/${id}`,
+        `${API_URL}/content/qualifications/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -182,32 +179,33 @@ const Features = () => {
 
       if (!response.ok || !data.success) {
         throw new Error(
-          data.message || "Failed to delete feature"
+          data.message ||
+            "Failed to delete qualification"
         );
       }
 
-      await loadFeatures();
+      await loadQualifications();
     } catch (err) {
       alert(
-        err.message || "Failed to delete feature"
+        err.message ||
+          "Failed to delete qualification"
       );
     }
   };
 
-  const filteredFeatures = features.filter(
-    (feature) => {
+  const filteredQualifications =
+    qualifications.filter((qualification) => {
       const value = search.toLowerCase();
 
       return (
-        feature.name
+        qualification.name
           ?.toLowerCase()
           .includes(value) ||
-        feature.description
+        qualification.description
           ?.toLowerCase()
           .includes(value)
       );
-    }
-  );
+    });
 
   return (
     <div className="superadmin-section-page">
@@ -219,11 +217,11 @@ const Features = () => {
             SCHOOL CONTENT
           </p>
 
-          <h1>Features</h1>
+          <h1>Qualifications</h1>
 
           <p>
-            Manage important features offered
-            by each school.
+            Manage academic qualifications
+            offered by each school.
           </p>
         </div>
 
@@ -236,7 +234,7 @@ const Features = () => {
         >
           {showForm
             ? "Close Form"
-            : "+ Add Feature"}
+            : "+ Add Qualification"}
         </button>
 
       </div>
@@ -272,7 +270,7 @@ const Features = () => {
 
           <input
             type="text"
-            placeholder="Search features..."
+            placeholder="Search qualifications..."
             value={search}
             onChange={(e) =>
               setSearch(e.target.value)
@@ -288,11 +286,11 @@ const Features = () => {
 
           <div className="superadmin-section-header">
             <div>
-              <h2>Create Feature</h2>
+              <h2>Create Qualification</h2>
 
               <p>
-                Add a feature to the selected
-                school.
+                Add a qualification to the
+                selected school.
               </p>
             </div>
           </div>
@@ -327,14 +325,14 @@ const Features = () => {
             </div>
 
             <div className="settings-group">
-              <label>Feature Name</label>
+              <label>Qualification Name</label>
 
               <input
                 type="text"
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="e.g. Qualified Teachers"
+                placeholder="e.g. NECTA Certified"
                 required
               />
             </div>
@@ -346,7 +344,7 @@ const Features = () => {
                 name="description"
                 value={form.description}
                 onChange={handleChange}
-                placeholder="Describe this feature..."
+                placeholder="Describe this qualification..."
                 rows="5"
               />
             </div>
@@ -358,7 +356,7 @@ const Features = () => {
             >
               {saving
                 ? "Creating..."
-                : "Create Feature"}
+                : "Create Qualification"}
             </button>
 
           </form>
@@ -373,7 +371,7 @@ const Features = () => {
 
             <thead>
               <tr>
-                <th>Feature</th>
+                <th>Qualification</th>
                 <th>Description</th>
                 <th>Actions</th>
               </tr>
@@ -384,34 +382,35 @@ const Features = () => {
               {!form.school_id ? (
                 <tr>
                   <td colSpan="3">
-                    Select a school to view features.
+                    Select a school to view
+                    qualifications.
                   </td>
                 </tr>
               ) : loading ? (
                 <tr>
                   <td colSpan="3">
-                    Loading features...
+                    Loading qualifications...
                   </td>
                 </tr>
-              ) : filteredFeatures.length === 0 ? (
+              ) : filteredQualifications.length === 0 ? (
                 <tr>
                   <td colSpan="3">
-                    No features found.
+                    No qualifications found.
                   </td>
                 </tr>
               ) : (
-                filteredFeatures.map(
-                  (feature) => (
-                    <tr key={feature.id}>
+                filteredQualifications.map(
+                  (qualification) => (
+                    <tr key={qualification.id}>
 
                       <td>
                         <strong>
-                          {feature.name}
+                          {qualification.name}
                         </strong>
                       </td>
 
                       <td>
-                        {feature.description ||
+                        {qualification.description ||
                           "-"}
                       </td>
 
@@ -420,7 +419,7 @@ const Features = () => {
                           className="table-action danger"
                           onClick={() =>
                             handleDelete(
-                              feature.id
+                              qualification.id
                             )
                           }
                         >
@@ -445,4 +444,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default Qualifications;

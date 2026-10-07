@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import "./App.css";
+import API_URL from "./services/api";
 
 /* =========================================================
    AUTH
@@ -15,6 +16,10 @@ import "./App.css";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import PublicSchools from "./pages/Schools";
+import PublicActivities from "./pages/Activities";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 /* =========================================================
    ADMIN
@@ -30,6 +35,7 @@ import AdminImages from "./admin/Images";
 import Contacts from "./admin/Contacts";
 import Qualifications from "./admin/Qualifications";
 import AdminSettings from "./admin/Settings";
+import PhotoLikes from "./admin/PhotoLikes";
 
 /* =========================================================
    SUPERADMIN
@@ -43,6 +49,8 @@ import SuperAdminUsers from "./superadmin/Users";
 import SuperAdminActivities from "./superadmin/Activities";
 import SuperAdminFeatures from "./superadmin/Features";
 import SuperAdminFacilities from "./superadmin/Facilities";
+import SuperAdminQualifications from "./superadmin/Qualifications";
+import SuperAdminContacts from "./superadmin/Contacts";
 import SuperAdminSettings from "./superadmin/Settings";
 
 /* =========================================================
@@ -62,6 +70,7 @@ import MemberLikes from "./member/Likes";
 function TopBar() {
   return (
     <div className="top-bar">
+
       <div className="site-width top-bar-inner">
 
         <div className="top-left">
@@ -70,11 +79,11 @@ function TopBar() {
 
         <div className="top-right">
 
-          <Link to="/#about">
+          <Link to="/about">
             About Us
           </Link>
 
-          <Link to="/#contact">
+          <Link to="/contact">
             Contact
           </Link>
 
@@ -85,6 +94,7 @@ function TopBar() {
         </div>
 
       </div>
+
     </div>
   );
 }
@@ -100,10 +110,12 @@ function Header() {
       <div className="site-width header-inner">
 
         <div className="header-logo">
+
           <img
             src="/logo.png"
             alt="ShuleBora Logo"
           />
+
         </div>
 
         <div className="header-title">
@@ -167,11 +179,11 @@ function Navbar() {
           ACTIVITIES
         </Link>
 
-        <Link to="/#about">
+        <Link to="/about">
           ABOUT US
         </Link>
 
-        <Link to="/#contact">
+        <Link to="/contact">
           CONTACT
         </Link>
 
@@ -233,13 +245,82 @@ function Hero() {
 ========================================================= */
 
 function Home() {
+
+  const [schools, setSchools] = useState([]);
+  const [activities, setActivities] = useState([]);
+
+  const [loadingSchools, setLoadingSchools] = useState(true);
+  const [loadingActivities, setLoadingActivities] = useState(true);
+
+  useEffect(() => {
+
+    fetch(`${API_URL}/schools`)
+
+      .then((response) => response.json())
+
+      .then((data) => {
+
+        if (data.success) {
+          setSchools(data.schools || []);
+        }
+
+      })
+
+      .catch((error) => {
+
+        console.error(
+          "Failed to load schools:",
+          error
+        );
+
+      })
+
+      .finally(() => {
+
+        setLoadingSchools(false);
+
+      });
+
+
+    fetch(`${API_URL}/activities`)
+
+      .then((response) => response.json())
+
+      .then((data) => {
+
+        if (data.success) {
+          setActivities(data.activities || []);
+        }
+
+      })
+
+      .catch((error) => {
+
+        console.error(
+          "Failed to load activities:",
+          error
+        );
+
+      })
+
+      .finally(() => {
+
+        setLoadingActivities(false);
+
+      });
+
+  }, []);
+
   return (
     <>
+
       <Hero />
 
       <main className="site-width main-content">
 
-        {/* SCHOOLS */}
+        {/* =================================================
+            SCHOOLS
+        ================================================= */}
 
         <section className="section-block">
 
@@ -268,50 +349,76 @@ function Home() {
 
           <div className="school-list">
 
-            {[
-              "NIA Academy",
-              "Zanzibar Modern School",
-              "Al-Noor Islamic School",
-            ].map((school) => (
+            {loadingSchools ? (
 
-              <div
-                className="school-row"
-                key={school}
-              >
+              <div className="information-row">
 
-                <div>
-
-                  <h3>
-                    {school}
-                  </h3>
-
-                  <p>
-                    Zanzibar, Tanzania
-                  </p>
-
-                </div>
-
-                <div className="school-meta">
-
-                  <span>
-                    REGISTERED
-                  </span>
-
-                  <Link to="/schools">
-                    VIEW DETAILS
-                  </Link>
-
-                </div>
+                <span>
+                  Loading schools...
+                </span>
 
               </div>
 
-            ))}
+            ) : schools.length === 0 ? (
+
+              <div className="information-row">
+
+                <span>
+                  No published schools available.
+                </span>
+
+              </div>
+
+            ) : (
+
+              schools
+                .slice(0, 3)
+                .map((school) => (
+
+                  <div
+                    className="school-row"
+                    key={school.id}
+                  >
+
+                    <div>
+
+                      <h3>
+                        {school.name}
+                      </h3>
+
+                      <p>
+                        {school.location ||
+                          "Location not provided"}
+                      </p>
+
+                    </div>
+
+                    <div className="school-meta">
+
+                      <span>
+                        REGISTERED
+                      </span>
+
+                      <Link to="/schools">
+                        VIEW DETAILS
+                      </Link>
+
+                    </div>
+
+                  </div>
+
+                ))
+
+            )}
 
           </div>
 
         </section>
 
-        {/* ACTIVITIES */}
+
+        {/* =================================================
+            ACTIVITIES
+        ================================================= */}
 
         <section
           className="section-block"
@@ -343,47 +450,61 @@ function Home() {
 
           <div className="information-list">
 
-            <div className="information-row">
+            {loadingActivities ? (
 
-              <strong>
-                Academic Activities
-              </strong>
+              <div className="information-row">
 
-              <span>
-                Academic programmes and learning activities
-              </span>
+                <span>
+                  Loading activities...
+                </span>
 
-            </div>
+              </div>
 
-            <div className="information-row">
+            ) : activities.length === 0 ? (
 
-              <strong>
-                Sports Activities
-              </strong>
+              <div className="information-row">
 
-              <span>
-                Sports and physical education activities
-              </span>
+                <span>
+                  No published activities available.
+                </span>
 
-            </div>
+              </div>
 
-            <div className="information-row">
+            ) : (
 
-              <strong>
-                Social Activities
-              </strong>
+              activities
+                .slice(0, 3)
+                .map((activity) => (
 
-              <span>
-                Social and community activities
-              </span>
+                  <div
+                    className="information-row"
+                    key={activity.id}
+                  >
 
-            </div>
+                    <strong>
+                      {activity.title}
+                    </strong>
+
+                    <span>
+                      {activity.description ||
+                        activity.category ||
+                        "School activity"}
+                    </span>
+
+                  </div>
+
+                ))
+
+            )}
 
           </div>
 
         </section>
 
-        {/* ABOUT */}
+
+        {/* =================================================
+            ABOUT
+        ================================================= */}
 
         <section
           className="section-block"
@@ -409,22 +530,25 @@ function Home() {
           <div className="text-section">
 
             <p>
-              ShuleBora is a school information platform designed to help
-              communities discover and understand schools through reliable
-              information.
+              ShuleBora is a school information platform
+              designed to help communities discover and
+              understand schools through reliable information.
             </p>
 
             <p>
-              The platform provides information about schools, activities,
-              facilities, qualifications, contacts and other important
-              educational information.
+              The platform provides information about schools,
+              activities, facilities, qualifications, contacts
+              and other important educational information.
             </p>
 
           </div>
 
         </section>
 
-        {/* CONTACT */}
+
+        {/* =================================================
+            CONTACT
+        ================================================= */}
 
         <section
           className="section-block"
@@ -517,12 +641,14 @@ function Home() {
         </section>
 
       </main>
+
     </>
   );
 }
 
+
 /* =========================================================
-   PUBLIC SCHOOLS
+   PUBLIC SCHOOLS - LEGACY
 ========================================================= */
 
 function Schools() {
@@ -535,6 +661,7 @@ function Schools() {
 
   return (
     <>
+
       <section className="page-banner">
 
         <div className="site-width">
@@ -666,17 +793,21 @@ function Schools() {
         </section>
 
       </main>
+
     </>
   );
 }
 
+
 /* =========================================================
-   PUBLIC ACTIVITIES
+   PUBLIC ACTIVITIES - LEGACY
 ========================================================= */
 
 function Activities() {
+
   return (
     <>
+
       <section className="page-banner">
 
         <div className="site-width">
@@ -772,15 +903,18 @@ function Activities() {
         </section>
 
       </main>
+
     </>
   );
 }
+
 
 /* =========================================================
    PUBLIC LAYOUT
 ========================================================= */
 
 function PublicLayout({ children }) {
+
   return (
     <div className="app">
 
@@ -798,11 +932,13 @@ function PublicLayout({ children }) {
   );
 }
 
+
 /* =========================================================
    FOOTER
 ========================================================= */
 
 function Footer() {
+
   return (
     <footer className="footer">
 
@@ -815,8 +951,8 @@ function Footer() {
           </h3>
 
           <p>
-            School Information Portal for discovering better educational
-            opportunities.
+            School Information Portal for discovering better
+            educational opportunities.
           </p>
 
         </div>
@@ -837,6 +973,14 @@ function Footer() {
 
           <Link to="/activities">
             Activities
+          </Link>
+
+          <Link to="/about">
+            About Us
+          </Link>
+
+          <Link to="/contact">
+            Contact
           </Link>
 
           <Link to="/login">
@@ -881,11 +1025,13 @@ function Footer() {
   );
 }
 
+
 /* =========================================================
    ADMIN ROUTES
 ========================================================= */
 
 function AdminRoutes() {
+
   return (
     <AdminLayout>
 
@@ -936,17 +1082,24 @@ function AdminRoutes() {
           element={<AdminSettings />}
         />
 
+        <Route
+          path="photo-likes"
+          element={<PhotoLikes />}
+        />
+
       </Routes>
 
     </AdminLayout>
   );
 }
 
+
 /* =========================================================
    SUPERADMIN ROUTES
 ========================================================= */
 
 function SuperAdminRoutes() {
+
   return (
     <SuperAdminLayout>
 
@@ -988,6 +1141,16 @@ function SuperAdminRoutes() {
         />
 
         <Route
+          path="qualifications"
+          element={<SuperAdminQualifications />}
+        />
+
+        <Route
+          path="contacts"
+          element={<SuperAdminContacts />}
+        />
+
+        <Route
           path="settings"
           element={<SuperAdminSettings />}
         />
@@ -998,47 +1161,24 @@ function SuperAdminRoutes() {
   );
 }
 
+
 /* =========================================================
    MEMBER ROUTES
 ========================================================= */
 
 function MemberRoutes() {
   return (
-    <MemberLayout>
-
-      <Routes>
-
-        <Route
-          index
-          element={<MemberDashboard />}
-        />
-
-        <Route
-          path="schools"
-          element={<MemberSchools />}
-        />
-
-        <Route
-          path="photos"
-          element={<MemberPhotos />}
-        />
-
-        <Route
-          path="likes"
-          element={<MemberLikes />}
-        />
-
-      </Routes>
-
-    </MemberLayout>
+    <MemberLayout />
   );
 }
+
 
 /* =========================================================
    APP
 ========================================================= */
 
 function App() {
+
   return (
     <BrowserRouter>
 
@@ -1057,6 +1197,7 @@ function App() {
           }
         />
 
+
         {/* =================================================
             PUBLIC SCHOOLS
         ================================================= */}
@@ -1065,10 +1206,11 @@ function App() {
           path="/schools"
           element={
             <PublicLayout>
-              <Schools />
+              <PublicSchools />
             </PublicLayout>
           }
         />
+
 
         {/* =================================================
             PUBLIC ACTIVITIES
@@ -1078,10 +1220,39 @@ function App() {
           path="/activities"
           element={
             <PublicLayout>
-              <Activities />
+              <PublicActivities />
             </PublicLayout>
           }
         />
+
+
+        {/* =================================================
+            PUBLIC ABOUT
+        ================================================= */}
+
+        <Route
+          path="/about"
+          element={
+            <PublicLayout>
+              <About />
+            </PublicLayout>
+          }
+        />
+
+
+        {/* =================================================
+            PUBLIC CONTACT
+        ================================================= */}
+
+        <Route
+          path="/contact"
+          element={
+            <PublicLayout>
+              <Contact />
+            </PublicLayout>
+          }
+        />
+
 
         {/* =================================================
             AUTH
@@ -1097,6 +1268,7 @@ function App() {
           element={<Register />}
         />
 
+
         {/* =================================================
             ADMIN
         ================================================= */}
@@ -1105,6 +1277,7 @@ function App() {
           path="/admin/*"
           element={<AdminRoutes />}
         />
+
 
         {/* =================================================
             SUPERADMIN
@@ -1115,14 +1288,18 @@ function App() {
           element={<SuperAdminRoutes />}
         />
 
+
         {/* =================================================
             MEMBER
         ================================================= */}
 
-        <Route
-          path="/member/*"
-          element={<MemberRoutes />}
-        />
+        <Route path="/member" element={<MemberRoutes />}>
+          <Route index element={<MemberDashboard />} />
+          <Route path="schools" element={<MemberSchools />} />
+          <Route path="photos" element={<MemberPhotos />} />
+          <Route path="likes" element={<MemberLikes />} />
+        </Route>
+
 
         {/* =================================================
             UNKNOWN ROUTES

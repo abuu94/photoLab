@@ -1,120 +1,168 @@
-const Dashboard = () => {
-  const stats = [
-    ["24", "Schools", "🏫"],
-    ["86", "Photos", "🖼"],
-    ["35", "My Likes", "❤️"],
-  ];
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import API_URL from "../services/api";
+import "./member.css";
 
-  const photos = [
-    {
-      id: 1,
-      school: "NIA Academy",
-      title: "Sports Day",
-      views: 450,
-      likes: 120,
-    },
-    {
-      id: 2,
-      school: "Zanzibar Modern School",
-      title: "School Event",
-      views: 620,
-      likes: 185,
-    },
-    {
-      id: 3,
-      school: "Al-Noor Islamic School",
-      title: "Students Activity",
-      views: 280,
-      likes: 64,
-    },
-  ];
+export default function Dashboard() {
+  const user = JSON.parse(localStorage.getItem("shulebora_user") || "{}");
+  const [schools, setSchools] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${API_URL}/schools`)
+      .then((res) => res.json())
+      .then((data) => {
+        setSchools(data.schools || data.data || []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setSchools([]);
+        setLoading(false);
+      });
+  }, []);
 
   return (
-    <div className="member-page">
+    <div className="member-dashboard">
 
-      <div className="superadmin-welcome">
-        <p className="superadmin-eyebrow">
-          MEMBER PORTAL
-        </p>
+      <section className="member-welcome">
+        <div>
+          <span>WELCOME TO SHULEBORA</span>
+          <h2>Welcome, {user.full_name || "Member"}</h2>
+          <p>
+            Discover schools, explore school information,
+            view school photos and save your favourite photos.
+          </p>
+        </div>
 
-        <h1>Welcome back</h1>
-
-        <p>
-          Discover schools and explore the latest
-          school photos and activities.
-        </p>
-      </div>
-
-      <div className="superadmin-stats-grid">
-
-        {stats.map(([value, label, icon]) => (
-          <div
-            className="superadmin-stat-card"
-            key={label}
-          >
-            <div className="superadmin-stat-icon">
-              {icon}
-            </div>
-
-            <div>
-              <span>{label}</span>
-              <strong>{value}</strong>
-            </div>
+        <div className="member-profile">
+          <div className="member-profile-avatar">
+            {(user.full_name || "M").charAt(0).toUpperCase()}
           </div>
-        ))}
-
-      </div>
-
-      <div className="member-panel">
-
-        <div className="member-panel-header">
           <div>
-            <p className="superadmin-eyebrow">
-              DISCOVER
-            </p>
+            <strong>{user.full_name || "Member"}</strong>
+            <small>{user.email || "Member Account"}</small>
+          </div>
+        </div>
+      </section>
 
-            <h2>Latest School Photos</h2>
+      <section className="member-stats">
+
+        <div className="member-stat-box">
+          <div className="member-stat-number">
+            {loading ? "..." : schools.length}
+          </div>
+          <div>
+            <strong>Available Schools</strong>
+            <p>Schools available on ShuleBora.</p>
           </div>
         </div>
 
-        <div className="member-photo-grid">
+        <div className="member-stat-box">
+          <div className="member-stat-icon">▧</div>
+          <div>
+            <strong>School Photos</strong>
+            <p>Explore photos uploaded by schools.</p>
+          </div>
+        </div>
 
-          {photos.map((photo) => (
-            <div
-              className="member-photo-card"
-              key={photo.id}
-            >
+        <div className="member-stat-box">
+          <div className="member-stat-icon">♡</div>
+          <div>
+            <strong>My Likes</strong>
+            <p>Photos you have liked.</p>
+          </div>
+        </div>
 
-              <div className="member-photo-placeholder">
-                🖼
-              </div>
+      </section>
 
-              <div className="member-photo-content">
+      <section className="member-actions">
 
-                <span className="member-school">
-                  {photo.school}
-                </span>
+        <div className="member-section-header">
+          <div>
+            <h2>Member Services</h2>
+            <p>Explore ShuleBora using the services below.</p>
+          </div>
+        </div>
 
-                <h3>{photo.title}</h3>
+        <div className="member-action-grid">
 
-                <div className="member-photo-meta">
-                  <span>👁 {photo.views}</span>
-                  <span>❤️ {photo.likes}</span>
+          <Link to="/member/schools">
+            <div className="member-action-icon">▣</div>
+            <strong>Schools</strong>
+            <span>Discover schools and view their information.</span>
+            <small>View Schools →</small>
+          </Link>
+
+          <Link to="/member/photos">
+            <div className="member-action-icon">▧</div>
+            <strong>School Photos</strong>
+            <span>View photos and discover school environments.</span>
+            <small>View Photos →</small>
+          </Link>
+
+          <Link to="/member/likes">
+            <div className="member-action-icon">♡</div>
+            <strong>My Likes</strong>
+            <span>Access photos you have liked.</span>
+            <small>View Likes →</small>
+          </Link>
+
+        </div>
+
+      </section>
+
+      <section className="member-recent">
+
+        <div className="member-section-header">
+          <div>
+            <h2>Available Schools</h2>
+            <p>Schools available on ShuleBora.</p>
+          </div>
+
+          <Link to="/member/schools">View All</Link>
+        </div>
+
+        {loading && (
+          <div className="member-empty">
+            Loading schools...
+          </div>
+        )}
+
+        {!loading && schools.length === 0 && (
+          <div className="member-empty">
+            No schools available yet.
+          </div>
+        )}
+
+        {!loading && schools.length > 0 && (
+          <div className="member-school-list">
+            {schools.slice(0, 5).map((school) => (
+              <div className="member-school-row" key={school.id}>
+
+                <div className="member-school-avatar">
+                  {(school.name || "S").charAt(0).toUpperCase()}
                 </div>
 
-                <button className="member-like-button">
-                  ♡ Like
-                </button>
+                <div className="member-school-info">
+                  <strong>{school.name}</strong>
+                  <span>
+                    {school.location ||
+                      school.address ||
+                      "Zanzibar"}
+                  </span>
+                </div>
+
+                <Link to="/member/schools">
+                  View
+                </Link>
 
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        )}
 
-        </div>
-      </div>
+      </section>
 
     </div>
   );
-};
-
-export default Dashboard;
+}

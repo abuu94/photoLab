@@ -1,173 +1,158 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import "./member.css";
 
-const MemberLayout = ({ children }) => {
+export default function MemberLayout() {
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation();
 
-  const menu = [
-    ["Dashboard", "/member", "▣"],
-    ["Schools", "/member/schools", "▤"],
-    ["Photos", "/member/photos", "🖼"],
-    ["My Likes", "/member/likes", "♥"],
-  ];
+  const user = JSON.parse(
+    localStorage.getItem("shulebora_user") || "{}"
+  );
 
-  const handleLogout = () => {
+  const logout = () => {
+    localStorage.removeItem("shulebora_token");
     localStorage.removeItem("shulebora_user");
-    window.location.href = "/login";
+    navigate("/login");
   };
 
-  return (
-    <div className="superadmin-layout member-layout">
+  const closeSidebar = () => setSidebarOpen(false);
 
-      {/* MOBILE OVERLAY */}
+  return (
+    <div className="member-layout">
+
       {sidebarOpen && (
         <div
-          className="superadmin-overlay"
-          onClick={() => setSidebarOpen(false)}
+          className="member-overlay"
+          onClick={closeSidebar}
         />
       )}
 
-      {/* SIDEBAR */}
       <aside
-        className={`superadmin-sidebar ${
-          sidebarOpen ? "sidebar-open" : ""
+        className={`member-sidebar ${
+          sidebarOpen ? "member-sidebar-open" : ""
         }`}
       >
 
-        {/* LOGO */}
-        <div className="superadmin-logo">
+        <div className="member-logo-area">
+          <img
+            src="/logo.png"
+            alt="ShuleBora"
+            className="member-logo"
+          />
 
-          <div className="superadmin-logo-icon">
-            <img
-              src="/logo.png"
-              alt="ShuleBora Logo"
-            />
+          <div className="member-brand-text">
+            <h2>ShuleBora</h2>
+            <span>Member Portal</span>
           </div>
-
-          <div className="superadmin-logo-text">
-            <strong>ShuleBora</strong>
-            <span>Member</span>
-          </div>
-
         </div>
 
-        {/* NAVIGATION */}
-        <nav className="superadmin-nav">
+        <div className="member-menu-title">
+          MAIN MENU
+        </div>
 
-          {menu.map(([label, path, icon]) => (
+        <nav className="member-nav">
 
-            <Link
-              key={path}
-              to={path}
-              className={`superadmin-nav-link ${
-                location.pathname === path
-                  ? "active"
-                  : ""
-              }`}
-              onClick={() => setSidebarOpen(false)}
-            >
+          <NavLink
+            to="/member"
+            end
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              isActive
+                ? "member-nav-link active"
+                : "member-nav-link"
+            }
+          >
+            <span className="member-nav-icon">⌂</span>
+            <span>Dashboard</span>
+          </NavLink>
 
-              <span className="superadmin-nav-icon">
-                {icon}
-              </span>
+          <NavLink
+            to="/member/schools"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              isActive
+                ? "member-nav-link active"
+                : "member-nav-link"
+            }
+          >
+            <span className="member-nav-icon">▣</span>
+            <span>Schools</span>
+          </NavLink>
 
-              <span>
-                {label}
-              </span>
-
-            </Link>
-
-          ))}
+          <NavLink
+            to="/member/photos"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              isActive
+                ? "member-nav-link active"
+                : "member-nav-link"
+            }
+          >
+            <span className="member-nav-icon">▧</span>
+            <span>School Photos</span>
+          </NavLink>
 
         </nav>
 
-        {/* LOGOUT */}
-        <button
-          className="superadmin-logout"
-          onClick={handleLogout}
-        >
+        <div className="member-sidebar-bottom">
 
-          <span className="superadmin-nav-icon">
-            ↪
-          </span>
-
-          <span>
-            Logout
-          </span>
-
-        </button>
-
-      </aside>
-
-      {/* MAIN */}
-      <main className="superadmin-main">
-
-        {/* TOPBAR */}
-        <header className="superadmin-topbar">
-
-          <button
-            className="superadmin-hamburger"
-            onClick={() =>
-              setSidebarOpen(!sidebarOpen)
-            }
-            aria-label="Toggle menu"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-
-          <div className="superadmin-topbar-title">
-
-            <strong>
-              ShuleBora
-            </strong>
-
-            <span>
-              Member Portal
-            </span>
-
-          </div>
-
-          <div className="superadmin-profile">
-
-            <button
-              className="superadmin-notification"
-              aria-label="Notifications"
-            >
-              ●
-            </button>
-
-            <div className="superadmin-avatar">
-              M
+          <div className="member-user-box">
+            <div className="member-user-avatar">
+              {(user.full_name || "M").charAt(0).toUpperCase()}
             </div>
 
-            <div className="superadmin-profile-info">
-
+            <div className="member-user-info">
               <strong>
-                Member
+                {user.full_name || "Member"}
               </strong>
 
               <span>
-                Community User
+                {user.email || "Member Account"}
               </span>
-
             </div>
+          </div>
 
+          <button
+            type="button"
+            className="member-logout-button"
+            onClick={logout}
+          >
+            Logout
+          </button>
+
+        </div>
+
+      </aside>
+
+      <main className="member-main">
+
+        <header className="member-topbar">
+
+          <button
+            type="button"
+            className="member-menu-button"
+            onClick={() => setSidebarOpen(true)}
+          >
+            ☰
+          </button>
+
+          <div className="member-topbar-title">
+            <strong>Member Portal</strong>
+          </div>
+
+          <div className="member-topbar-user">
+            {user.full_name || "Member"}
           </div>
 
         </header>
 
-        {/* CONTENT */}
-        <section className="superadmin-content">
-          {children}
+        <section className="member-content">
+          <Outlet />
         </section>
 
       </main>
 
     </div>
   );
-};
-
-export default MemberLayout;
+}

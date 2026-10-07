@@ -6,25 +6,70 @@ const SuperAdminLayout = ({ children }) => {
   const location = useLocation();
 
   const menuItems = [
-    { label: "Dashboard", path: "/superadmin", icon: "▣" },
-    { label: "Schools", path: "/superadmin/schools", icon: "▤" },
-    { label: "Admins", path: "/superadmin/admins", icon: "♙" },
-    { label: "Users", path: "/superadmin/users", icon: "♟" },
-    { label: "Activities", path: "/superadmin/activities", icon: "◆" },
-    { label: "Features", path: "/superadmin/features", icon: "★" },
-    { label: "Facilities", path: "/superadmin/facilities", icon: "▦" },
-    { label: "Settings", path: "/superadmin/settings", icon: "⚙" },
+    {
+      label: "Dashboard",
+      path: "/superadmin",
+      icon: "▣",
+    },
+    {
+      label: "Schools",
+      path: "/superadmin/schools",
+      icon: "▤",
+    },
+    {
+      label: "Admins",
+      path: "/superadmin/admins",
+      icon: "♙",
+    },
+    {
+      label: "Users",
+      path: "/superadmin/users",
+      icon: "♟",
+    },
+    {
+      label: "Activities",
+      path: "/superadmin/activities",
+      icon: "◆",
+    },
+    {
+      label: "Features",
+      path: "/superadmin/features",
+      icon: "★",
+    },
+    {
+      label: "Facilities",
+      path: "/superadmin/facilities",
+      icon: "▦",
+    },
+    {
+      label: "Qualifications",
+      path: "/superadmin/qualifications",
+      icon: "✓",
+    },
+    {
+      label: "Contacts",
+      path: "/superadmin/contacts",
+      icon: "☎",
+    },
+    {
+      label: "Settings",
+      path: "/superadmin/settings",
+      icon: "⚙",
+    },
   ];
 
   const handleLogout = () => {
     localStorage.removeItem("shulebora_user");
+    localStorage.removeItem("shulebora_token");
     window.location.href = "/login";
   };
 
   return (
     <div className="superadmin-layout">
 
-      {/* MOBILE OVERLAY */}
+      {/* =====================================================
+          MOBILE OVERLAY
+      ===================================================== */}
       {sidebarOpen && (
         <div
           className="superadmin-overlay"
@@ -32,7 +77,9 @@ const SuperAdminLayout = ({ children }) => {
         />
       )}
 
-      {/* SIDEBAR */}
+      {/* =====================================================
+          SIDEBAR
+      ===================================================== */}
       <aside
         className={`superadmin-sidebar ${
           sidebarOpen ? "sidebar-open" : ""
@@ -41,24 +88,40 @@ const SuperAdminLayout = ({ children }) => {
 
         {/* LOGO */}
         <div className="superadmin-logo">
+
           <div className="superadmin-logo-icon">
+
             <img
               src="/logo.png"
               alt="ShuleBora Logo"
             />
+
           </div>
 
           <div className="superadmin-logo-text">
-            <strong>ShuleBora</strong>
-            <span>SuperAdmin</span>
+
+            <strong>
+              ShuleBora
+            </strong>
+
+            <span>
+              SuperAdmin
+            </span>
+
           </div>
+
         </div>
 
-        {/* NAVIGATION */}
+
+        {/* ===================================================
+            NAVIGATION
+        =================================================== */}
         <nav className="superadmin-nav">
 
           {menuItems.map((item) => {
-            const active = location.pathname === item.path;
+
+            const active =
+              location.pathname === item.path;
 
             return (
               <Link
@@ -67,40 +130,63 @@ const SuperAdminLayout = ({ children }) => {
                 className={`superadmin-nav-link ${
                   active ? "active" : ""
                 }`}
-                onClick={() => setSidebarOpen(false)}
+                onClick={() =>
+                  setSidebarOpen(false)
+                }
               >
+
                 <span className="superadmin-nav-icon">
                   {item.icon}
                 </span>
 
-                <span>{item.label}</span>
+                <span>
+                  {item.label}
+                </span>
+
               </Link>
             );
           })}
 
         </nav>
 
-        {/* LOGOUT */}
+
+        {/* ===================================================
+            LOGOUT
+        =================================================== */}
         <button
           className="superadmin-logout"
           onClick={handleLogout}
         >
-          <span className="superadmin-nav-icon">↪</span>
-          <span>Logout</span>
+
+          <span className="superadmin-nav-icon">
+            ↪
+          </span>
+
+          <span>
+            Logout
+          </span>
+
         </button>
 
       </aside>
 
-      {/* MAIN AREA */}
+
+      {/* =====================================================
+          MAIN AREA
+      ===================================================== */}
       <main className="superadmin-main">
 
-        {/* TOPBAR */}
+        {/* ===================================================
+            TOPBAR
+        =================================================== */}
         <header className="superadmin-topbar">
 
           {/* MOBILE MENU */}
           <button
             className="superadmin-hamburger"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
+            onClick={() =>
+              setSidebarOpen(!sidebarOpen)
+            }
             aria-label="Toggle menu"
           >
             <span></span>
@@ -108,11 +194,20 @@ const SuperAdminLayout = ({ children }) => {
             <span></span>
           </button>
 
+
           {/* TITLE */}
           <div className="superadmin-topbar-title">
-            <strong>ShuleBora</strong>
-            <span>SuperAdmin Panel</span>
+
+            <strong>
+              ShuleBora
+            </strong>
+
+            <span>
+              SuperAdmin Panel
+            </span>
+
           </div>
+
 
           {/* PROFILE */}
           <div className="superadmin-profile">
@@ -129,20 +224,31 @@ const SuperAdminLayout = ({ children }) => {
             </div>
 
             <div className="superadmin-profile-info">
-              <strong>SuperAdmin</strong>
-              <span>Administrator</span>
+
+              <strong>
+                SuperAdmin
+              </strong>
+
+              <span>
+                Administrator
+              </span>
+
             </div>
 
           </div>
 
         </header>
 
-        {/* PAGE CONTENT */}
+
+        {/* ===================================================
+            PAGE CONTENT
+        =================================================== */}
         <section className="superadmin-content">
           {children}
         </section>
 
       </main>
+
     </div>
   );
 };

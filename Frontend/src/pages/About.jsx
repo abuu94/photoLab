@@ -1,10 +1,10 @@
+
 const About = () => {
   return (
     <div className="about-page">
 
       {/* HERO */}
       <section className="about-page-hero">
-
         <div className="about-page-hero-content">
 
           <span className="section-badge">
@@ -17,36 +17,28 @@ const About = () => {
           </h1>
 
           <p>
-            ShuleBora is a platform created to connect communities
-            with schools and make it easier to discover, understand
-            and interact with educational institutions.
+            ShuleBora is a digital platform designed to connect
+            communities with schools and make educational information
+            easier to discover and access.
           </p>
 
         </div>
-
       </section>
 
 
-      {/* WHO WE ARE */}
+      {/* ABOUT eGAZ */}
       <section className="about-section">
 
         <div className="about-grid">
 
           {/* VISUAL */}
           <div className="about-visual">
-
-            {/* LARGE CARD REMOVED */}
-
-            <div className="about-floating-card about-floating-one">
-              <strong>500+</strong>
-              <span>Schools</span>
+            <div className="about-egaz-box">
+              <span>eGAZ</span>
+              <strong>
+                Education &amp; Community
+              </strong>
             </div>
-
-            <div className="about-floating-card about-floating-two">
-              <strong>10K+</strong>
-              <span>Community Members</span>
-            </div>
-
           </div>
 
 
@@ -54,42 +46,43 @@ const About = () => {
           <div className="about-content">
 
             <span className="about-label">
-              WHO WE ARE
+              ABOUT eGAZ
             </span>
 
             <h2>
-              Making School Discovery
-              <span> Simple & Better</span>
+              Empowering Education Through
+              <span> Digital Innovation</span>
             </h2>
 
             <p>
-              Finding the right school should be simple. ShuleBora
-              brings useful school information together in one
-              platform so parents, students and community members
-              can make informed decisions.
+              eGAZ is the organization behind the development and
+              implementation of ShuleBora, a digital platform created
+              to improve access to school information and strengthen
+              connections between schools and their communities.
             </p>
 
             <p>
-              Through ShuleBora, users can explore schools, discover
-              activities, learn about facilities and connect with
-              schools in their communities.
+              Through technology, eGAZ aims to support better access
+              to educational information and create opportunities
+              for schools, students, parents and communities to
+              connect through a trusted digital platform.
             </p>
 
             <div className="about-values">
 
               <div>
                 <span>✓</span>
-                <strong>Accessible Information</strong>
+                <strong>Education</strong>
+              </div>
+
+              <div>
+                <span>✓</span>
+                <strong>Digital Innovation</strong>
               </div>
 
               <div>
                 <span>✓</span>
                 <strong>Community Connection</strong>
-              </div>
-
-              <div>
-                <span>✓</span>
-                <strong>Better Opportunities</strong>
               </div>
 
             </div>
@@ -101,23 +94,24 @@ const About = () => {
       </section>
 
 
-      {/* MISSION & VISION */}
+      {/* SHULEBORA */}
       <section className="about-mission-section">
 
         <div className="about-section-heading">
 
           <span className="about-label">
-            OUR PURPOSE
+            ABOUT SHULEBORA
           </span>
 
           <h2>
-            Building a Better
-            <span> Education Community</span>
+            Making School Discovery
+            <span> Simple &amp; Accessible</span>
           </h2>
 
           <p>
-            Our goal is to create a trusted digital space where
-            schools and communities can connect and grow together.
+            ShuleBora brings school information together in one
+            digital platform so communities can discover and learn
+            more about educational institutions.
           </p>
 
         </div>
@@ -136,9 +130,9 @@ const About = () => {
             </h3>
 
             <p>
-              To make school information accessible and help
-              communities discover educational opportunities
-              through a simple and modern digital platform.
+              To make reliable school information easier to access
+              and help communities discover educational opportunities
+              through technology.
             </p>
 
           </div>
@@ -155,9 +149,9 @@ const About = () => {
             </h3>
 
             <p>
-              To become a trusted platform connecting schools,
-              students, parents and communities for a stronger
-              educational future.
+              To build a trusted digital platform that connects
+              schools, students, parents and communities for a
+              stronger educational future.
             </p>
 
           </div>
@@ -174,8 +168,8 @@ const About = () => {
             </h3>
 
             <p>
-              We believe in accessibility, innovation, community,
-              transparency and creating opportunities for the next
+              Accessibility, innovation, transparency, community
+              and creating better opportunities for the next
               generation.
             </p>
 
@@ -192,16 +186,16 @@ const About = () => {
         <div>
 
           <span>
-            Ready to explore?
+            Discover Education
           </span>
 
           <h2>
-            Discover Schools with ShuleBora
+            Explore Schools with ShuleBora
           </h2>
 
           <p>
-            Explore schools, activities and opportunities around
-            your community.
+            Discover schools, activities and educational information
+            available through the ShuleBora platform.
           </p>
 
           <a href="/schools">
