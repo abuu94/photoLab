@@ -197,45 +197,97 @@ function Navbar() {
    HERO
 ========================================================= */
 
-function Hero() {
+function Hero({ images = [], currentImage = 0, setCurrentImage }) {
+  const activeImage = images[currentImage];
+
+  const imageUrl = activeImage?.image_path
+    ? `${API_URL}/content/uploads/${activeImage.image_path}`
+    : "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop";
+
+  const previousImage = () => {
+    if (images.length > 1) {
+      setCurrentImage((currentImage - 1 + images.length) % images.length);
+    }
+  };
+
+  const nextImage = () => {
+    if (images.length > 1) {
+      setCurrentImage((currentImage + 1) % images.length);
+    }
+  };
+
   return (
-    <section className="hero-section">
+    <section
+      className="hero-section"
+      style={{
+        backgroundImage: `linear-gradient(90deg, rgba(0, 65, 110, 0.94) 0%, rgba(0, 100, 160, 0.78) 48%, rgba(0, 70, 110, 0.12) 100%), url("${imageUrl}")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="hero-curve" />
 
       <div className="site-width hero-content">
-
         <div className="hero-text">
-
-          <span>
-            SHULEBORA SCHOOL DIRECTORY
+          <span className="hero-subtitle">
+            ELIMU BORA, MUSTAKABALI BORA
           </span>
 
-          <h2>
-            Find all activity in any school in
+          <h2 className="hero-title">
+            SERIKALI YA MAPINDUZI
             <br />
-            Zanzibar, Tanzania
+            <span>YA ZANZIBAR</span>
           </h2>
 
-          <p>
-            All activity made by school you can see its photo here
+          <p className="hero-desc">
+            Tujenge pamoja elimu bora kwa kizazi cha leo na kesho.
           </p>
 
+          <Link to="/schools" className="hero-explore-button">
+            Explore Schools <span aria-hidden="true">→</span>
+          </Link>
+
+          {activeImage?.title && (
+            <p className="hero-image-caption">{activeImage.title}</p>
+          )}
         </div>
-
-        <div className="hero-search">
-
-          <input
-            type="text"
-            placeholder="Search school name..."
-          />
-
-          <button type="button">
-            SEARCH
-          </button>
-
-        </div>
-
       </div>
 
+      {images.length > 1 && (
+        <>
+          <div className="hero-slider-nav">
+            <button
+              type="button"
+              className="hero-slider-button"
+              onClick={previousImage}
+              aria-label="Picha iliyopita"
+            >
+              &#10094;
+            </button>
+
+            <button
+              type="button"
+              className="hero-slider-button"
+              onClick={nextImage}
+              aria-label="Picha inayofuata"
+            >
+              &#10095;
+            </button>
+          </div>
+
+          <div className="hero-slider-dots">
+            {images.map((image, index) => (
+              <button
+                type="button"
+                key={image.id ?? index}
+                className={`hero-slider-dot ${index === currentImage ? "active" : ""}`}
+                onClick={() => setCurrentImage(index)}
+                aria-label={`Fungua picha ${index + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </section>
   );
 }
@@ -248,9 +300,38 @@ function Home() {
 
   const [schools, setSchools] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [images, setImages] = useState([]);
+  const [currentImage, setCurrentImage] = useState(0);
 
   const [loadingSchools, setLoadingSchools] = useState(true);
   const [loadingActivities, setLoadingActivities] = useState(true);
+  const [loadingImages, setLoadingImages] = useState(true);
+
+  useEffect(() => {
+    fetch(`${API_URL}/content/images`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setImages(data.images || []);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to load images:", error);
+      })
+      .finally(() => {
+        setLoadingImages(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [images.length]);
 
   useEffect(() => {
 
@@ -314,7 +395,7 @@ function Home() {
   return (
     <>
 
-      <Hero />
+      <Hero images={images} currentImage={currentImage} setCurrentImage={setCurrentImage} />
 
       <main className="site-width main-content">
 
